@@ -1,0 +1,22 @@
+﻿Name;GroupCategory;GroupScope
+Operadores de configuração de rede;Security;DomainLocal
+Usuários de monitor de desempenho;Security;DomainLocal
+Usuários de log de desempenho;Security;DomainLocal
+Distributed COM - Usuários;Security;DomainLocal
+Operadores criptográficos;Security;DomainLocal
+Leitores de log de eventos;Security;DomainLocal
+Certificate Service DCOM Access;Security;DomainLocal
+Editores de certificados;Security;DomainLocal
+Criadores de confiança de floresta de entrada;Security;DomainLocal
+Grupo de Replicação de Senha RODC Permitido;Security;DomainLocal
+Controladores de Domínio de Empresa Somente Leitura;Security;Universal
+Opers. de servidores;Security;DomainLocal
+Duplicadores;Security;DomainLocal
+Opers. de contas;Security;DomainLocal
+Controladores de Domínio Somente Leitura;Security;Global
+Usuários da área de trabalho remota;Security;DomainLocal
+DnsAdmins;Security;DomainLocal
+DnsUpdateProxy;Security;Global
+SQLServer2005SQLBrowserUser$UGS20;Security;DomainLocal
+SQLServer2005MSSQLServerADHelperUser$UGS20;Security;DomainLocal
+SQLServer2005MSSQLUser$UGS20$ARCSERVE_DB;Security;DomainLocal
