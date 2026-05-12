@@ -124,7 +124,7 @@ if ($freeSpaceGB -lt 20){Write-Host "[!] ALERTA: O espaço livre no C: é inferi
 if (-not $dnsTest){Write-Host "[!] ALERTA: Teste de DNS falhou, verifique a conectividade de rede." -ForegroundColor Red $alertasdisparados++}
 if ($rebootPending){Write-Host "[!] ALERTA: Há uma reinicialização pendente, reinicie o sistema o mais breve possível." -ForegroundColor Red $alertasdisparados++}
 
-if ($alertasdisparados -eq 0){Write-Host "Nenhum alerta crítico detectado. O computador está operando dentro dos parâmetros ideiais." -ForegroundColor Green}
+if ($alertasdisparados -eq 0){Write-Host "Nenhum alerta crítico detectado. O computador está operando dentro dos parâmetros ideais." -ForegroundColor Green}
 
 Write-Host "`n--- PROCESSO CONCLUÍDO ---" -ForegroundColor Green
 
