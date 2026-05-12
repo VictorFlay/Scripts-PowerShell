@@ -55,14 +55,14 @@ Write-Host "$statusDescription | Carga: $($battery.EstimatedChargeRemaining)%" -
 # 5. Exibe o Uptime do sistema
 $os = Get-CimInstance -Class Win32_OperatingSystem
 $uptime = (Get-Date) - $os.LastBootUpTime
-Write-Host "Uptime do sistema: $($uptime.Days) dias, $($uptime.Hours) horas, $($uptime.Minutes) minutos" -ForegroundColor Cyan
+Write-Host "Uptime do sistema: " -ForegroundColor Gray -NoNewline; Write-Host "$($uptime.Days) dias, $($uptime.Hours) horas, $($uptime.Minutes) minutos" -ForegroundColor Cyan
 
 # 6. Exibe o espaço em disco disponível na unidade C:
 try {
 $volume =Get-Volume -DriveLetter C -ErrorAction Stop
 $freeSpace =$volume.SizeRemaining
 $freeSpaceGB =[math]::Round($freeSpace / 1GB, 2)
-Write-Host "Espaço livre atual no C: : $freeSpaceGB GB" -ForeGroundColor Cyan
+Write-Host "Espaço livre atual no C:" -ForegroundColor Gray -NoNewline; Write-Host " $freeSpaceGB GB" -ForeGroundColor Cyan
 } catch {
 Write-Warning "Não foi possível ler o espaço em disco automaticamente."
 }
@@ -82,12 +82,12 @@ try {
 
 # 7. Diagnóstico: Reinicialização Pendente (Check de Registro)
 $rebootPending = Test-Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Component Based Servicing\RebootPending" -ErrorAction SilentlyContinue
-Write-Host "Reinicialização Pendente: $(if ($rebootPending) { "Sim" } else { "Não" })" -ForegroundColor Cyan
+Write-Host "Reinicialização Pendente:" -ForegroundColor Gray -NoNewline; Write-Host "$(if ($rebootPending) { "Sim" } else { "Não" })" -ForegroundColor Cyan
 
 # 8. Diagnóstico: Resumo de Rede (IP Local)
 $ip = Get-NetIPAddress -AddressFamily IPv4 | Where-Object {$_.InterfaceAlias -notmatch 'Loopback' } | Select-Object -First 1
 $dnsTest = Test-NetConnection -ComputerName google.com -InformationLevel Quiet
-Write-Host "Endereço IP Local: $($ip.IPAddress) | DNS OK: $(if($dnsTest){ "Sim" } else { "Não" })" -ForegroundColor Cyan
+Write-Host "Endereço IP Local:" -ForegroundColor Gray -NoNewline; Write-Host " $($ip.IPAddress) | DNS OK: $(if($dnsTest){ "Sim" } else { "Não" })" -ForegroundColor Cyan
 
 # 9. Limpeza de pastas temporárias e cache DNS
 $tempPaths = @(
@@ -111,7 +111,7 @@ Write-Host "Reiniciando Spooler de Impressão..." -ForegroundColor Green
 Restart-Service -Name Spooler -Force
 
 # 11. Análise de gargalos de desempenho
-Write-Host "`n--- TOP 3 PROCESSOS (MEMÓRIA RAM) ---" ForeGroundColor Yellow
+Write-Host "`n--- TOP 3 PROCESSOS (MEMÓRIA RAM) ---" -ForeGroundColor Yellow
 Get-Process | Sort-Object -Property WS -Descending | Select-Object -First 3 -Property Name, @{Name="RAM (MB)";Expression={[math]::Round($_.WS / 1MB, 2)}} | Format-Table -AutoSize
 
 # 12. Resumo final
