@@ -110,6 +110,22 @@ Clear-DnsClientCache -ErrorAction SilentlyContinue
 Write-Host "Reiniciando Spooler de Impressão..." -ForegroundColor Green
 Restart-Service -Name Spooler -Force
 
+# 11. Análise de gargalos de desempenho
+Write-Host "`n--- TOP 3 PROCESSOS (MEMÓRIA RAM) ---" ForeGroundColor Yellow
+Get-Process | Sort-Object -Property WS -Descending | Select-Object -First 3 -Property Name, @{Name="RAM (MB)";Expression={[math]::Round($_.WS / 1MB, 2)}} | Format-Table -AutoSize
+
+# 12. Resumo final
+Write-Host "`n--- RESUMO FINAL ---" -ForegroundColor Green
+
+$alertasdisparados = 0
+
+if ($uptime.Days -ge 7){Write-Host "[!] ALERTA: Recomenda-se reiniciar o sistema, pois o uptime é de $($uptime.Days) dias." -ForegroundColor Red $alertasdisparados++}
+if ($freeSpaceGB -lt 20){Write-Host "[!] ALERTA: O espaço livre no C: é inferior a 20 GB." -ForegroundColor Red $alertasdisparados++}
+if (-not $dnsTest){Write-Host "[!] ALERTA: Teste de DNS falhou, verifique a conectividade de rede." -ForegroundColor Red $alertasdisparados++}
+if ($rebootPending){Write-Host "[!] ALERTA: Há uma reinicialização pendente, reinicie o sistema o mais breve possível." -ForegroundColor Red $alertasdisparados++}
+
+if ($alertasdisparados -eq 0){Write-Host "Nenhum alerta crítico detectado. O computador está operando dentro dos parâmetros ideiais." -ForegroundColor Green}
+
 Write-Host "`n--- PROCESSO CONCLUÍDO ---" -ForegroundColor Green
 
 # Encerra o log e mantém a janela aberta para leitura dos resultados
