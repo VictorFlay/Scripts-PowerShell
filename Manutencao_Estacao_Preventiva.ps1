@@ -129,8 +129,10 @@ $alertasdisparados = 0
 
 if ($uptime.Days -ge 7){Write-Host "[!] ALERTA: Recomenda-se reiniciar o sistema, pois o uptime é de $($uptime.Days) dias." -ForegroundColor Red $alertasdisparados++}
 if ($freeSpaceGB -lt 20){Write-Host "[!] ALERTA: O espaço livre no C: é inferior a 20 GB." -ForegroundColor Red $alertasdisparados++}
-if (-not $dnsTest){Write-Host "[!] ALERTA: Teste de DNS falhou, verifique a conectividade de rede." -ForegroundColor Red $alertasdisparados++}
-if ($rebootPending){Write-Host "[!] ALERTA: Há uma reinicialização pendente, reinicie o sistema o mais breve possível." -ForegroundColor Red $alertasdisparados++}
+if (-not $dnsInterno1){Write-Host "[!] ALERTA: Teste de DNS falhou, verifique a conectividade de rede." -ForegroundColor Red $alertasdisparados++}
+if (-not $dnsInterno2){Write-Host "[!] ALERTA: Teste de DNS falhou, verifique a conectividade de rede." -ForegroundColor Red $alertasdisparados++}
+if ($rebootPending){Write-Host "[!
+] ALERTA: Há uma reinicialização pendente, reinicie o sistema o mais breve possível." -ForegroundColor Red $alertasdisparados++}
 
 if ($alertasdisparados -eq 0){Write-Host "Nenhum alerta crítico detectado. O computador está operando dentro dos parâmetros ideais." -ForegroundColor Green}
 
