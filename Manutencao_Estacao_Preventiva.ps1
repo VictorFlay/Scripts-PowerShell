@@ -88,7 +88,7 @@ Write-Host "Reinicialização Pendente:" -ForegroundColor Gray -NoNewline; Write
 $ip = Get-NetIPAddress -AddressFamily IPv4 | Where-Object {$_.InterfaceAlias -notmatch 'Loopback' } | Select-Object -First 1
 
 $dnsGoogleTest = Test-NetConnection -ComputerName google.com -InformationLevel Quiet
-Write-Host "Endereço IP:" -ForegroundColor Gray -NoNewline; Write-Host " $($ip.IPAddress) | DNS Google OK: $(if($dnsTest){ "Sim" } else { "Não" })" -ForegroundColor Cyan
+Write-Host "Endereço IP:" -ForegroundColor Gray -NoNewline; Write-Host " $($ip.IPAddress) | DNS Google OK: $(if($dnsGoogleTest){ "Sim" } else { "Não" })" -ForegroundColor Cyan
 
 $dnsInterno1 = Test-NetConnection -ComputerName 172.26.0.70 -InformationLevel Quiet
 Write-Host "Endereço IP:" -ForegroundColor Gray -NoNewline; Write-Host " $($ip.IPAddress) | DNS Interno 1 OK: $(if($dnsInterno1){ "Sim" } else { "Não" })" -ForegroundColor Cyan
