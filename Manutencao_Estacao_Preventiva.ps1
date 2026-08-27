@@ -52,9 +52,10 @@ Write-Host "Status da Bateria: " -ForegroundColor Gray -NoNewline
 Write-Host "$statusDescription | Carga: $($battery.EstimatedChargeRemaining)%" -ForegroundColor Yellow
 }
 
-# 5. Exibe o Uptime do sistema
+# 5. Exibe o SO e Uptime do sistema
 $os = Get-CimInstance -Class Win32_OperatingSystem
 $uptime = (Get-Date) - $os.LastBootUpTime
+Write-Host "Sistema Operacional: " -ForegroundColor Gray -NoNewline; Write-Host "$($os.Caption) | Build: $($os.BuildNumber)" -ForegroundColor Cyan
 Write-Host "Uptime do sistema: " -ForegroundColor Gray -NoNewline; Write-Host "$($uptime.Days) dias, $($uptime.Hours) horas, $($uptime.Minutes) minutos" -ForegroundColor Cyan
 
 # 6. Exibe o espaço em disco disponível na unidade C:
@@ -121,6 +122,9 @@ Restart-Service -Name Spooler -Force
 # 11. Análise de gargalos de desempenho
 Write-Host "`n--- TOP 3 PROCESSOS (MEMÓRIA RAM) ---" -ForeGroundColor Yellow
 Get-Process | Sort-Object -Property WS -Descending | Select-Object -First 3 -Property Name, @{Name="RAM (MB)";Expression={[math]::Round($_.WS / 1MB, 2)}} | Format-Table -AutoSize
+$ramlivre = [math]::Round($os.FreePhysicalMemory / 1MB, 2)
+Write-Host "`nMemória RAM livre: $ramlivre GB" -ForegroundColor Yellow
+
 
 # 12. Resumo final
 Write-Host "`n--- RESUMO FINAL ---" -ForegroundColor Green
