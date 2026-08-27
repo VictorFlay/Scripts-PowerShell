@@ -3,8 +3,14 @@
     Manutenção Preventiva de estações de trabalho Unimed - Versão 1.1
 
 .DESCRIPTION
-    Script para suporte técnico: Exibe Uptime, IP, Espaço em Disco, Inventário de hardware, testes de DNS e limpeza de lixeira 
-    limpa arquivos temporários e reinicia o Spooler.
+    Ferramenta de diagnóstico e manutenção preventiva para estações de trabalho.
+
+    Realiza inventário básico de hardware, diagnóstico do sistema operacional,
+    verificação de conectividade de rede, análise de espaço em disco, saúde dos
+    discos físicos, validação de DNS corporativo, limpeza de arquivos temporários,
+    reinicialização do spooler de impressão e geração automática de logs para
+    suporte técnico.
+
     Requer privilégios de Administrador.
 
 .NOTES
@@ -92,10 +98,10 @@ $dnsGoogleTest = Test-NetConnection -ComputerName google.com -InformationLevel Q
 Write-Host "Endereço IP:" -ForegroundColor Gray -NoNewline; Write-Host " $($ip.IPAddress) | DNS Google OK: $(if($dnsGoogleTest){ "Sim" } else { "Não" })" -ForegroundColor Cyan
 
 $dnsInterno1 = Test-NetConnection -ComputerName 172.26.0.70 -InformationLevel Quiet
-Write-Host "Endereço IP:" -ForegroundColor Gray -NoNewline; Write-Host " $($ip.IPAddress) | DNS Interno 1 OK: $(if($dnsInterno1){ "Sim" } else { "Não" })" -ForegroundColor Cyan
+Write-Host "DNS Interno 1 OK: $(if($dnsInterno1){ "Sim" } else { "Não" })" -ForegroundColor Cyan
 
 $dnsInterno2 = Test-NetConnection -ComputerName 172.26.0.71 -InformationLevel Quiet
-Write-Host "Endereço IP:" -ForegroundColor Gray -NoNewline; Write-Host " $($ip.IPAddress) | DNS Interno 2 OK: $(if($dnsInterno2){ "Sim" } else { "Não" })" -ForegroundColor Cyan
+Write-Host "DNS Interno 2 OK: $(if($dnsInterno2){ "Sim" } else { "Não" })" -ForegroundColor Cyan
 
 
 # 9. Limpeza de pastas temporárias e cache DNS
@@ -133,10 +139,8 @@ $alertasdisparados = 0
 
 if ($uptime.Days -ge 7){Write-Host "[!] ALERTA: Recomenda-se reiniciar o sistema, pois o uptime é de $($uptime.Days) dias." -ForegroundColor Red $alertasdisparados++}
 if ($freeSpaceGB -lt 20){Write-Host "[!] ALERTA: O espaço livre no C: é inferior a 20 GB." -ForegroundColor Red $alertasdisparados++}
-if (-not $dnsInterno1){Write-Host "[!] ALERTA: Teste de DNS falhou, verifique a conectividade de rede." -ForegroundColor Red $alertasdisparados++}
-if (-not $dnsInterno2){Write-Host "[!] ALERTA: Teste de DNS falhou, verifique a conectividade de rede." -ForegroundColor Red $alertasdisparados++}
-if ($rebootPending){Write-Host "[!
-] ALERTA: Há uma reinicialização pendente, reinicie o sistema o mais breve possível." -ForegroundColor Red $alertasdisparados++}
+if ((-not $dnsInterno1) -or (-not $dnsInterno2)){Write-Host "[!] ALERTA: Um ou mais DNS internos não responderam." -ForegroundColor Red $alertasdisparados++}
+if ($rebootPending){Write-Host "[!] ALERTA: Há uma reinicialização pendente, reinicie o sistema o mais breve possível." -ForegroundColor Red $alertasdisparados++}
 
 if ($alertasdisparados -eq 0){Write-Host "Nenhum alerta crítico detectado. O computador está operando dentro dos parâmetros ideais." -ForegroundColor Green}
 
