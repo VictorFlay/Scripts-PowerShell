@@ -120,8 +120,8 @@ Write-Host "Reiniciando Spooler de Impressão..." -ForegroundColor Green
 Restart-Service -Name Spooler -Force
 
 # 11. Análise de gargalos de desempenho
-Write-Host "`n--- TOP 3 PROCESSOS (MEMÓRIA RAM) ---" -ForeGroundColor Yellow
-Get-Process | Sort-Object -Property WS -Descending | Select-Object -First 3 -Property Name, @{Name="RAM (MB)";Expression={[math]::Round($_.WS / 1MB, 2)}} | Format-Table -AutoSize
+Write-Host "`n--- TOP 5 PROCESSOS (MEMÓRIA RAM) ---" -ForeGroundColor Yellow
+Get-Process | Sort-Object -Property WS -Descending | Select-Object -First 5 -Property Name, @{Name="RAM (MB)";Expression={[math]::Round($_.WS / 1MB, 2)}} | Format-Table -AutoSize
 $ramlivre = [math]::Round($os.FreePhysicalMemory / 1MB, 2)
 Write-Host "`nMemória RAM livre: $ramlivre GB" -ForegroundColor Yellow
 
